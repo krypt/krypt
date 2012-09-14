@@ -10,6 +10,7 @@ group :development do
   gem 'rake'
   gem 'rspec'
   gem 'jruby-openssl', :platforms => :jruby
+  gem 'fuzzbert',      :git => "git://github.com/krypt/FuzzBert.git"
 end
 
 group :test do
