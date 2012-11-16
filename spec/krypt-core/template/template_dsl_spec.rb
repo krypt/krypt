@@ -18,13 +18,13 @@ shared_examples_for "a primitive declaration" do |func|
   context "rejects declaration with no name" do
     let(:name) { nil }
     let(:opts) { nil }
-    it { -> { subject }.should raise_error ArgumentError }
+    specify { -> { subject }.should raise_error ArgumentError }
   end
 
   context "declararation with no options" do
     let(:name) { :test }
     let(:opts) { nil }
-    it { subject.should respond_to name }
+    specify { subject.should respond_to name }
   end
 
   context "declaration with options" do
@@ -32,32 +32,32 @@ shared_examples_for "a primitive declaration" do |func|
 
     context "allows to mark as optional" do
       let(:opts) { {optional: true} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
 
     context "allows to set a tag" do
       let(:opts) { {tag: 42} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
 
     context "allows to set tagging" do
       let(:opts) { {tagging: :EXPLICIT} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
 
     context "allows to set tagging" do
       let(:opts) { {tagging: :EXPLICIT} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
 
     context "allows to set arbitrary default value" do
       let(:opts) { {default: Object.new} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
 
     context "allows to set optional, tag, tagging and default at once" do
       let(:opts) { {optional: true, tag: 42, tagging: :IMPLICIT, default: Object.new} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
   end
 end
@@ -85,21 +85,21 @@ shared_examples_for "a typed declaration" do |func|
     let(:name) { nil }
     let(:type) { template }
     let(:opts) { nil }
-    it { -> { subject }.should raise_error ArgumentError }
+    specify { -> { subject }.should raise_error ArgumentError }
   end
 
   context "rejects declaration with no type" do
     let(:name) { :test }
     let(:type) { nil }
     let(:opts) { nil }
-    it { -> { subject }.should raise_error ArgumentError }
+    specify { -> { subject }.should raise_error ArgumentError }
   end
 
   context "declararation with no options" do
     let(:name) { :test }
     let(:type) { template }
     let(:opts) { nil }
-    it { subject.should respond_to name }
+    specify { subject.should respond_to name }
   end
 
   context "declaration with options" do
@@ -108,32 +108,32 @@ shared_examples_for "a typed declaration" do |func|
 
     context "allows to mark as optional" do
       let(:opts) { {optional: true} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
 
     context "allows to set a tag" do
       let(:opts) { {tag: 42} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
 
     context "allows to set tagging" do
       let(:opts) { {tagging: :EXPLICIT} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
 
     context "allows to set tagging" do
       let(:opts) { {tagging: :EXPLICIT} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
 
     context "allows to set arbitrary default value" do
       let(:opts) { {default: Object.new} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
 
     context "allows to set optional, tag, tagging and default at once" do
       let(:opts) { {optional: true, tag: 42, tagging: :IMPLICIT, default: Object.new} }
-      it { subject.should respond_to name }
+      specify { subject.should respond_to name }
     end
   end
 end
@@ -200,7 +200,7 @@ shared_examples_for "constructed type constructor" do |type|
   end
 end
       
-shared_examples_for "DER-based equality with <=>" do |type, tag|
+shared_examples_for "DER-based equality with <=>" do |type|
   let(:template) do
     t = type
     Class.new do
@@ -209,35 +209,95 @@ shared_examples_for "DER-based equality with <=>" do |type, tag|
     end
   end
 
+  let(:tag) do
+    if type == Krypt::ASN1::Template::Sequence
+      "\x30"
+    elsif type == Krypt::ASN1::Template::Set
+      "\x31"
+    else
+      raise "only Set or Sequence"
+    end
+  end
+
   context "determines equality based on the encoding" do
     let(:der) { "#{tag}\x03\x02\x01\x01" }
     let(:v1) { template.parse_der(der) }
     let(:v2) { template.parse_der(der) }
-    it { v1.should == v2 && v1.eql?(v2).should == false }
+    specify { v1.should == v2 && v1.eql?(v2).should == false }
   end
 
   context "finds a value encoded and reparsed to be equal to itself" do
     let(:v1) { template.parse_der("#{tag}\x03\x02\x01\x01") }
-    it { v1.should == (template.parse_der(v1.to_der)) }
+    specify { v1.should == (template.parse_der(v1.to_der)) }
   end
 
   context "when equal in terms of DER but not BER" do
     let(:v1) { template.parse_der("#{tag}\x83\x00\x00\x03\x02\x01\x01") }
     let(:v2) { template.parse_der("#{tag}\x03\x02\x01\x01") }
-    it { v1.should_not == v2 }
+    specify { v1.should_not == v2 }
+  end
+end
+
+shared_examples_for "accepting fields with special name" do |type, name|
+  let(:template) do
+    t = type
+    n = name
+    Class.new do
+      include t
+      asn1_integer name
+    end
+  end
+
+  let(:tag) do
+    if type == Krypt::ASN1::Template::Sequence
+      "\x30"
+    elsif type == Krypt::ASN1::Template::Set
+      "\x31"
+    else
+      raise "only Set or Sequence"
+    end
+  end
+
+  context "allows getting the value from a fresh instance" do
+    subject { template.new }
+    specify { subject.send(name).should be_nil }
+  end
+
+  context "allows getting the value from a parsed instance" do
+    subject { template.parse_der("#{tag}\x03\x02\x01\x01") }
+    specify { subject.send(name).should eq(1) }
+  end
+
+  context "allows setting the value on a fresh instance" do
+    subject { template.new }
+    specify { subject.send("#{name}=".to_sym, 2).should eq(2) }
+  end
+
+  context "allows setting the value on a parsed instance" do
+    subject { template.parse_der("#{tag}\x03\x02\x01\x01") }
+    specify do
+      obj = subject
+      obj.send(name).should eq(1)
+      obj.send("#{name}=".to_sym, 2).should eq(2)
+      obj.send(name).should eq(2)
+    end
   end
 end
 
 describe "Krypt::ASN1::Template::Sequence" do
   it_behaves_like "Krypt::ASN1::Template"
   it_behaves_like "constructed type constructor", Krypt::ASN1::Template::Sequence
-  it_behaves_like "DER-based equality with <=>", Krypt::ASN1::Template::Sequence, "\x30"
+  it_behaves_like "DER-based equality with <=>", Krypt::ASN1::Template::Sequence
+  it_behaves_like "accepting fields with special name", Krypt::ASN1::Template::Sequence, :tag
+  it_behaves_like "accepting fields with special name", Krypt::ASN1::Template::Sequence, :type
 end
 
 describe "Krypt::ASN1::Template::Set" do
   it_behaves_like "Krypt::ASN1::Template"
   it_behaves_like "constructed type constructor", Krypt::ASN1::Template::Set
-  it_behaves_like "DER-based equality with <=>", Krypt::ASN1::Template::Set, "\x31"
+  it_behaves_like "DER-based equality with <=>", Krypt::ASN1::Template::Set
+  it_behaves_like "accepting fields with special name", Krypt::ASN1::Template::Set, :tag
+  it_behaves_like "accepting fields with special name", Krypt::ASN1::Template::Set, :type
 end
 
 describe "Krypt::ASN1::Template::Choice" do

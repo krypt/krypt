@@ -30,7 +30,7 @@ module Krypt::ASN1
           layout: []
         }
         base.instance_variable_set(:@definition, definition)
-        base.extend Template::Accessor
+        base.extend Template::ChoiceAccessor
         base.extend Template::ChoiceDefinitions
         base.extend Template::Parser
         base.asn1_attr_accessor :value, :@value
@@ -140,6 +140,17 @@ module Krypt::ASN1
         end
         define_method "#{name.to_s}=".to_sym do |value|
           _set_callback(iv_name, value)
+        end
+      end
+    end
+
+    module ChoiceAccessor
+      def asn1_attr_accessor(name, iv_name)
+        define_method name do
+          _get_callback_choice(iv_name)
+        end
+        define_method "#{name.to_s}=".to_sym do |value|
+          _set_callback_choice(iv_name, value)
         end
       end
     end
