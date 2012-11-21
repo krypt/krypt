@@ -16,9 +16,11 @@ See the file 'LICENSE' for further details.
 =end
 
 require_relative 'krypt_missing'
+require_relative 'krypt/provider'
 
 require 'krypt-core'
 
+# The following files depend on krypt-core being loaded
 require_relative 'krypt/asn1'
 require_relative 'krypt/x509'
 require_relative 'krypt/codec'
