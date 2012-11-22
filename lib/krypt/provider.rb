@@ -20,29 +20,15 @@ module Krypt
         PROVIDERS[name]
       end
 
-      def default=(provider)
-        raise AlreadyExistsError.new("There already is a default Provider") if PROVIDERS.has_key?(:default)
-        PROVIDERS[:default] = provider
-        PROVIDER_LIST.insert(0, :default)
-      end
-
-      def default
-        PROVIDERS[:default]
-      end
-
       def remove(name)
-        raise KryptError.new("Cannot remove the default Provider") if name == :default
         PROVIDERS.delete(name)
         PROVIDER_LIST.delete(name)
       end
 
-      def service(f)
+      def new_service(klass, *args)
         PROVIDER_LIST.reverse.each do |name| 
-          begin
-            service = PROVIDERS[name].instance_eval(&f)
-            return service if service
-          rescue NameError
-          end
+          service = PROVIDERS[name].new_service(klass, *args)
+          return service if service
         end
         raise ServiceNotAvailableError.new("The requested service is not available")
       end
