@@ -15,8 +15,13 @@ See the file 'LICENSE' for further details.
 
 =end
 
+module Krypt
+  class Error < StandardError; end
+end
+
 require_relative 'krypt_missing'
 require_relative 'krypt/provider'
+require_relative 'krypt/digest'
 
 require 'krypt-core'
 

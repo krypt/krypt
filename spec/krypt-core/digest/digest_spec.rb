@@ -1,5 +1,5 @@
 require 'rspec'
-require 'krypt-core'
+require 'krypt'
 require 'stringio'
 require 'base64'
 require_relative '../resources'
@@ -113,7 +113,7 @@ describe Krypt::Digest do
     end
 
     it "rejects an unknown algorithm" do
-      -> { klass.new("HAS1") }.should raise_error digesterror 
+      -> { klass.new("HAS1") }.should raise_error Krypt::Provider::ServiceNotAvailableError
     end
 
     context "accepts an algorithm oid String" do
@@ -156,7 +156,7 @@ describe Krypt::Digest do
     end
 
     it "rejects an unknown oid" do
-      -> { klass.new("1.2.3.4.5") }.should raise_error digesterror
+      -> { klass.new("1.2.3.4.5") }.should raise_error Krypt::Provider::ServiceNotAvailableError
     end
   end
 

@@ -4,11 +4,29 @@ require 'openssl'
 require 'stringio'
 require 'pp'
 
-io = StringIO.new("test")
-codec = Krypt::Hex::Encoder.new(Krypt::Hex::Decoder.new(io))
-result = ""
-while (c = codec.read(1))
-  result << c
-end
-p result
+class MyDigest
+  def initialize(alg)
+    @alg = alg
+  end
 
+  def digest
+    puts @alg
+  end
+end
+
+class MyProvider
+  def new_service(klass, *rest)
+    if klass == Krypt::Digest
+      return MyDigest.new(rest[0])
+    end
+    nil
+  end
+end
+
+Krypt::Provider.register(:my, MyProvider.new)
+
+d = Krypt::Digest.new("SHA1")
+d2 = Krypt::Digest::SHA256.new
+
+d.digest
+d2.digest

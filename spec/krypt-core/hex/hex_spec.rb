@@ -1,5 +1,5 @@
 require 'rspec'
-require 'krypt-core'
+require 'krypt'
 
 describe Krypt::Hex do 
 

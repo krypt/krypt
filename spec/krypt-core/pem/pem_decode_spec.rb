@@ -1,5 +1,5 @@
 require 'rspec'
-require 'krypt-core'
+require 'krypt'
 require 'stringio'
 require 'base64'
 require_relative '../resources'

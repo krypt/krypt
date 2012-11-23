@@ -1,5 +1,5 @@
 require 'rspec'
-require 'krypt-core'
+require 'krypt'
 
 describe Krypt::ASN1 do 
   let(:mod) { Krypt::ASN1 }

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>module Krypt::Digest - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="../index.html">Home</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>digest.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-new">::new</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../Krypt.html">Krypt</a>
+  
+    <li><a href="../Krypt/Digest.html">Krypt::Digest</a>
+  
+    <li><a href="../Krypt/Digest/DigestError.html">Krypt::Digest::DigestError</a>
+  
+    <li><a href="../Krypt/Digest/SHA1.html">Krypt::Digest::SHA1</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module Krypt::Digest</h1>
+
+  <div id="description" class="description">
+    
+<p><a href="Digest.html">Digest</a> allows you to compute message digests
+(sometimes interchangeably called "hashes") of arbitrary data that are
+cryptographically secure, i.e. a <a href="Digest.html">Digest</a>
+implements a secure one-way function.</p>
+
+<p>One-way functions offer some useful properties. E.g. given two distinct
+inputs the probability that both yield the same output is highly unlikely.
+Combined with the fact that every message digest algorithm has a
+fixed-length output of just a few bytes, digests are often used to create
+unique identifiers for arbitrary data. A common example is the creation of
+a unique id for binary documents that are stored in a database.</p>
+
+<p>Another useful characteristic of one-way functions (and thus the name) is
+that given a digest there is no indication about the original data that
+produced it, i.e. the only way to identify the original input is to
+“brute-force” through every possible combination of inputs.</p>
+
+<p>These characteristics make one-way functions also ideal companions for
+public key signature algorithms: instead of signing an entire document,
+first a hash of the document is produced with a considerably faster message
+digest algorithm and only the few bytes of its output need to be signed
+using the slower public key algorithm. To validate the integrity of a
+signed document, it suffices to re-compute the hash and verify that it is
+equal to that in the signature.</p>
+
+<p>Among the supported message digest algorithms are:</p>
+<ul><li>
+<p><a href="Digest/SHA1.html">SHA1</a>, SHA224, SHA256, SHA384 and SHA512</p>
+</li><li>
+<p>MD5</p>
+</li><li>
+<p>RIPEMD160</p>
+</li></ul>
+
+<p>For each of these algorithms, there is a sub-class of <a
+href="Digest.html">Digest</a> that can be instantiated as simply as</p>
+
+<pre>digest = Krypt::Digest::SHA1.new</pre>
+
+<h3 id="label-Creating+Digest+by+name+or+by+Object+Identifier">Creating <a href="Digest.html">Digest</a> by name or by Object Identifier</h3>
+
+<p>Each supported digest algorithm has an Object Identifier (OID) associated
+with it. A <a href="Digest.html">Digest</a> can either be created by
+passing the string representation of the corresponding object identifier or
+by a string representation of the algorithm name.</p>
+
+<p>For example, the OBJECT IDENTIFIER for SHA-1 is 1.3.14.3.2.26, so it can be
+instantiated like this:</p>
+
+<pre>d = Krypt::Digest.new(&quot;1.3.14.3.2.26&quot;)
+d = Krypt::Digest.new(&quot;SHA1&quot;)
+d = Krypt::Digest.new(&quot;sha1&quot;)</pre>
+
+<p>Algorithm names may either be all upper- or all lowercase, hyphens are
+generally stripped: for instance SHA-1 becomes “SHA1”, RIPEMD-160  becomes
+“RIPEMD160”.</p>
+
+<p>“Breaking” a message digest algorithm means defying its one-way function
+characteristics, i.e. producing a collision or finding a way to get to the
+original data by means that are more efficient than brute-forcing etc.
+Older digest algorithms can be considered broken in this sense, even the
+very popular MD5 and <a href="Digest/SHA1.html">SHA1</a> algorithms. Should
+security be your highest concern, then you should probably rely on SHA224,
+SHA256, SHA384 or SHA512.</p>
+
+<h3 id="label-Hashing+a+file">Hashing a file</h3>
+
+<pre>data = File.read('document')
+sha256 = Krypt::Digest::SHA256.new
+digest = sha256.digest(data)</pre>
+
+<h3 id="label-Hashing+several+pieces+of+data+at+once">Hashing several pieces of data at once</h3>
+
+<pre>data1 = File.read('file1')
+data2 = File.read('file2')
+data3 = File.read('file3')
+sha256 = Krypt::Digest::SHA256.new
+sha256 &lt;&lt; data1
+sha256 &lt;&lt; data2
+sha256 &lt;&lt; data3
+digest = sha256.digest</pre>
+
+<h3 id="label-Reuse+a+Digest+instance">Reuse a <a href="Digest.html">Digest</a> instance</h3>
+
+<pre>data1 = File.read('file1')
+sha256 = Krypt::Digest::SHA256.new
+digest1 = sha256.digest(data1)
+
+data2 = File.read('file2')
+sha256.reset
+digest2 = sha256.digest(data2)</pre>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(name_or_oid, provider=nil)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File digest.rb, line 98</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name_or_oid</span>, <span class="ruby-identifier">provider</span>=<span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">receiver</span> = <span class="ruby-identifier">provider</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">provider</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Krypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Provider</span>
+  <span class="ruby-identifier">f</span> = <span class="ruby-operator">-</span><span class="ruby-operator">&gt;</span>(<span class="ruby-identifier">_</span>) { <span class="ruby-identifier">new_service</span>(<span class="ruby-constant">Krypt</span><span class="ruby-operator">::</span><span class="ruby-constant">Digest</span>, <span class="ruby-identifier">name_or_oid</span>) }
+  <span class="ruby-identifier">receiver</span>.<span class="ruby-identifier">instance_eval</span>(&amp;<span class="ruby-identifier">f</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

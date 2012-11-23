@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 require 'rspec'
-require 'krypt-core'
+require 'krypt'
 require 'openssl'
 require_relative './resources'
 
