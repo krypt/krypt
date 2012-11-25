@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'krypt-provider-openssl', :platforms => :ruby,  :git => "git://github.com/krypt/krypt-provider-openssl.git"
 gem 'krypt-core-c',           :platforms => :ruby,  :git => "git://github.com/krypt/krypt-core-c.git"
+gem 'binyo',                  :platforms => :ruby,  :git => "git://github.com/krypt/binyo.git"
 
 gem 'krypt-provider-jce', :platforms => :jruby,  :git => "git://github.com/krypt/krypt-provider-jce.git"
 gem 'krypt-core-java',    :platforms => :jruby,  :git => "git://github.com/krypt/krypt-core-java.git"
