@@ -1,21 +1,21 @@
 source 'https://rubygems.org'
 
-gem 'krypt-provider-openssl', :platforms => :ruby,  :git => "git://github.com/krypt/krypt-provider-openssl.git"
-gem 'krypt-core-c',           :platforms => :ruby,  :git => "git://github.com/krypt/krypt-core-c.git"
-gem 'binyo',                  :platforms => :ruby,  :git => "git://github.com/krypt/binyo.git"
+gem 'binyo',                  :platforms => :ruby,  :github => 'krypt/binyo', :branch => 'master'
+gem 'krypt-provider-openssl', :platforms => :ruby,  :github => 'krypt/krypt-provider-openssl', :branch => 'master'
+gem 'krypt-core-c',           :platforms => :ruby,  :github => 'krypt/krypt-core-c', :branch => 'master'
 
-gem 'krypt-provider-jce', :platforms => :jruby,  :git => "git://github.com/krypt/krypt-provider-jce.git"
-gem 'krypt-core-java',    :platforms => :jruby,  :git => "git://github.com/krypt/krypt-core-java.git"
+gem 'krypt-provider-jce',     :platforms => :jruby, :github => 'krypt/krypt-provider-jce', :branch => 'master'
+gem 'krypt-core-java',        :platforms => :jruby, :github => 'krypt/krypt-core-java', :branch => 'master'
 
 group :development do
   gem 'rake'
   gem 'rspec'
   gem 'jruby-openssl', :platforms => :jruby
-  gem 'fuzzbert',      :git => "git://github.com/krypt/FuzzBert.git"
 end
 
 group :test do
   gem 'simplecov', :require => false
+  gem 'fuzzbert',  :github => 'krypt/FuzzBert', :branch => 'master'
 end
 
 gemspec
