@@ -1,3 +1,5 @@
+# encoding: US-ASCII
+
 require 'rspec'
 require 'krypt'
 require_relative '../resources'
