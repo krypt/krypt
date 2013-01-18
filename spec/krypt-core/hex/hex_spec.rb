@@ -36,17 +36,17 @@ describe Krypt::Hex do
           mod.encode("foobar").should == "666f6f626172"
         end
       end
+    end
 
-      it "should return a string with binary encoding" do
-        mod.encode("test").encoding.should == Encoding::BINARY
-      end
+    it "should return a string with US-ASCII encoding" do
+      mod.encode("test").encoding.should == Encoding::US_ASCII
+    end
 
-      it "should return a string with binary encoding even if
-          the underlying encoding is not" do
-        auml = [%w{ C3 A4 }.join('')].pack('H*')
-        auml.force_encoding(Encoding::UTF_8)
-        mod.encode(auml).encoding.should == Encoding::BINARY
-      end
+    it "should return a string with US-ASCII encoding even if
+        the underlying encoding is not" do
+      auml = [%w{ C3 A4 }.join('')].pack('H*')
+      auml.force_encoding(Encoding::UTF_8)
+      mod.encode(auml).encoding.should == Encoding::US_ASCII
     end
   end
 
@@ -79,6 +79,17 @@ describe Krypt::Hex do
       specify "foobar" do
         mod.decode("666f6f626172").should == "foobar"
       end
+    end
+
+    it "should return a string with binary encoding" do
+      mod.decode("666f6f626172").encoding.should == Encoding::BINARY
+    end
+
+    it "should return a string with US-ASCII encoding even if
+        the underlying encoding is not" do
+      data = "666f"
+      data.force_encoding(Encoding::UTF_8)
+      mod.decode(data).encoding.should == Encoding::BINARY
     end
 
     it "ignores case for a-f" do

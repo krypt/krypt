@@ -37,6 +37,8 @@ end
 require_relative 'krypt_missing'
 require_relative 'krypt/provider'
 require_relative 'krypt/digest'
+require_relative 'krypt/hmac'
+require_relative 'krypt/pkcs5'
 
 require 'krypt-core'
 

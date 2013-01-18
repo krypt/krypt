@@ -36,17 +36,17 @@ describe Krypt::Base64 do
           mod.encode("foobar").should == "Zm9vYmFy"
         end
       end
+    end
 
-      it "should return a string with binary encoding" do
-        mod.encode("test").encoding.should == Encoding::BINARY
-      end
+    it "should return a string with US-ASCII encoding" do
+      mod.encode("test").encoding.should == Encoding::US_ASCII
+    end
 
-      it "should return a string with binary encoding even if
-          the underlying encoding is not" do
-        auml = [%w{ C3 A4 }.join('')].pack('H*')
-        auml.force_encoding(Encoding::UTF_8)
-        mod.encode(auml).encoding.should == Encoding::BINARY
-      end
+    it "should return a string with US-ASCII encoding even if
+        the underlying encoding is not" do
+      auml = [%w{ C3 A4 }.join('')].pack('H*')
+      auml.force_encoding(Encoding::UTF_8)
+      mod.encode(auml).encoding.should == Encoding::US_ASCII
     end
   end
 
@@ -79,6 +79,17 @@ describe Krypt::Base64 do
       specify "foobar" do
         mod.decode("Zm9vYmFy").should == "foobar"
       end
+    end
+
+    it "should return a string with binary encoding" do
+      mod.decode("Zm9vYmE=").encoding.should == Encoding::BINARY
+    end
+
+    it "should return a string with binary encoding even if
+        the underlying encoding is not" do
+      auml = [%w{ C3 A4 }.join('')].pack('H*')
+      auml.force_encoding(Encoding::UTF_8)
+      mod.decode(auml).encoding.should == Encoding::BINARY
     end
   end
 
