@@ -63,13 +63,13 @@ is at
 
 https://github.com/krypt/krypt-provider-openssl.
 
-krypt-provider-jce
+krypt-provider-jdk
 ------------------
 
 Realization of the krypt-provider API in Java exclusively
 to be used by JRuby. The implementation is based on the
-Java Cryptography Extensions, the JDK built-in cryptography
-library. The repository is at
+JDK built-in security and cryptography library. The
+repository is at
 
-https://github.com/krypt/krypt-provider-jce.
+https://github.com/krypt/krypt-provider-jdk.
 
