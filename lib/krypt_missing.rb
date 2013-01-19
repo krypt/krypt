@@ -18,6 +18,13 @@ module Krypt
         end
       end
     end
+
+    def xor!(recv, other)
+      recv.bytes.each_with_index do |b, i|
+        recv.setbyte(i, b ^ other.getbyte(i))
+      end
+      recv
+    end
   end
 
  end

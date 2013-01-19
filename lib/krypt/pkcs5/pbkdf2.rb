@@ -13,14 +13,10 @@ module Krypt
       raise "outlen too large" if outlen > MAX_FACTOR * @block_size
 
       num_blocks = (outlen.to_f / @block_size).ceil
-      result = String.new # enforces ASCII-8BIT
-
-      1.upto(num_blocks) do |i|
-        result << f(pwd, salt, iter, i)
-      end
-
-      @digest.reset
-      result.slice(0, outlen)
+      # enforces ASCII-8BIT
+      String.new.tap do |result|
+        1.upto(num_blocks) { |i| result << f(pwd, salt, iter, i) }
+      end.slice(0, outlen)
     end
 
     def generate_hex(pwd, salt, iter, outlen)
@@ -31,12 +27,12 @@ module Krypt
 
       def f(pwd, salt, iter, i)
         u = salt + [i].pack("L>")
-        result = "\0" * @block_size
-        1.upto(iter) do |i|
-          u = Krypt::HMAC.digest(@digest, pwd, u)
-          result = xor(result, u)
+        ("\0" * @block_size).force_encoding(Encoding::BINARY).tap do |result|
+          1.upto(iter) do
+            u = Krypt::HMAC.digest(@digest, pwd, u)
+            xor!(result, u)
+          end
         end
-        result
       end
 
   end

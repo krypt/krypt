@@ -7,7 +7,7 @@ module Krypt
       @key = process_key(key)
 
       # hash ipad
-      @digest << xor("\x36" * @digest.block_length, @key)
+      hash_pad(0x36)
     end
 
     def update(data)
@@ -18,7 +18,7 @@ module Krypt
     def digest
       inner_digest = @digest.digest
       # hash opad
-      @digest << xor("\x5c" * @digest.block_length, @key)
+      hash_pad(0x5c)
       @digest << inner_digest
       @digest.digest
     end
@@ -56,6 +56,12 @@ module Krypt
           end
         else
           key
+        end
+      end
+
+      def hash_pad(pad_char)
+        @digest << String.new.tap do |s|
+          @key.each_byte { |b| s << (pad_char ^ b) }
         end
       end
 

@@ -74,7 +74,6 @@ describe "Krypt::PBKDF2" do
       it { binary.should == Krypt::Hex.decode(expected) }
       it { hex.should == expected }
     end
-
   end
 
 end
