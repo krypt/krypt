@@ -1102,14 +1102,14 @@ describe Krypt::ASN1::ASN1Data do
           @io = io
         end
 
-        def read(len=nil, buf=nil)
-          @io.read(len, buf)
+        def read(*args)
+          @io.read(*args)
         end
       end
       generic = c.new(stringio)
       decoder.decode_der(generic).should be_an_instance_of Krypt::ASN1::Null
       decoder.decode_der(generic).should be_an_instance_of Krypt::ASN1::Integer
-    end unless RUBY_PLATFORM =~ /java/
+    end
   end
 
   describe "extracted from ASN1.decode_pem" do
