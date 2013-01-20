@@ -99,4 +99,4 @@ describe Krypt::Hex do
       mod.decode(str.upcase).should == dec 
     end
   end
-end unless RUBY_PLATFORM =~ /java/ # TODO
+end

@@ -91,4 +91,4 @@ describe Krypt::Base64::Decoder do
     it_behaves_like "RFC 4648 Base64 decode", :write_string
   end
 
-end unless RUBY_PLATFORM =~ /java/ # TODO
+end

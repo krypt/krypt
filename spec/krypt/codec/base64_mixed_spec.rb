@@ -12,5 +12,5 @@ describe "Krypt::Base64 integration" do
   describe "Encoder and Decoder stacked on top of each other" do
     it_behaves_like "Identity codec", Krypt::Base64::Encoder, Krypt::Base64::Decoder
   end
-end unless RUBY_PLATFORM =~ /java/ # TODO
+end
 

@@ -93,5 +93,5 @@ describe Krypt::Base64 do
     end
   end
 
-end unless RUBY_PLATFORM =~ /java/ # TODO
+end
 
