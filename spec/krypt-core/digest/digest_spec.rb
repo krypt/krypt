@@ -97,7 +97,7 @@ describe Krypt::Digest do
           let(:algo) { "ripemd160" }
           its(:name) { should == "RIPEMD160" }
         end 
-      end unless RUBY_PLATFORM =~ /java/
+      end
 
       context "MD5" do
         context "uppercase" do
@@ -147,7 +147,7 @@ describe Krypt::Digest do
       context "RIPEMD-160" do
         let(:oid) { "1.3.36.3.2.1" }
         its(:name) { should == "RIPEMD160" }
-      end unless RUBY_PLATFORM =~ /java/
+      end
 
       context "MD5" do
         let(:oid) { "1.2.840.113549.2.5" }
@@ -333,7 +333,7 @@ describe Krypt::Digest do
       context "RIPEMD160" do
         let(:algo) { "RIPEMD160" }
         its(:digest_length) { should == 20 }
-      end unless RUBY_PLATFORM =~ /java/
+      end
 
       context "MD5" do
         let(:algo) { "MD5" }
@@ -374,7 +374,7 @@ describe Krypt::Digest do
       context "RIPEMD160" do
         let(:algo) { "RIPEMD160" }
         its(:block_length) { should == 64 }
-      end unless RUBY_PLATFORM =~ /java/
+      end
 
       context "MD5" do
         let(:algo) { "MD5" }
@@ -416,7 +416,7 @@ describe Krypt::Digest do
       context "RIPEMD160" do
         let(:algo) { "RIPEMD160" }
         it { klass::RIPEMD160.new.digest(data).should == expected }
-      end unless RUBY_PLATFORM =~ /java/
+      end
 
       context "MD5" do
         let(:algo) { "MD5" }
@@ -667,7 +667,7 @@ describe Krypt::Digest do
         it { binary.should == [expected].pack("H*") }
         it { hex.upcase.should == expected }
     end
-  end unless RUBY_PLATFORM =~ /java/
+  end
 
   # taken from http://www.nsrl.nist.gov/testdata/
   context "MD5 implementation conforms to test vectors" do
