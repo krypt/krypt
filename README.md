@@ -73,3 +73,10 @@ repository is at
 
 https://github.com/krypt/krypt-provider-jdk.
 
+License
+-------
+
+Copyright (c) 2012-2013 Hiroshi Nakamura and Martin Boßlet.
+krypt and all its sub projects are distributed under the MIT
+License. See LICENSE for further details.
+
