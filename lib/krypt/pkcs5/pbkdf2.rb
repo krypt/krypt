@@ -12,6 +12,7 @@ module Krypt
     def generate(pwd, salt, iter, outlen)
       raise "outlen too large" if outlen > MAX_FACTOR * @block_size
 
+      @digest.reset
       num_blocks = (outlen.to_f / @block_size).ceil
       # enforces ASCII-8BIT
       String.new.tap do |result|
