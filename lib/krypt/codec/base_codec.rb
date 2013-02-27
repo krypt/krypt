@@ -4,7 +4,7 @@ module Krypt::BaseCodec #:nodoc:
     data = @io.read(read_len)
     data = yield data if data
     if @buf
-      data = data || ""
+      data ||= ""
       data = @buf << data
     end
     return data unless len && data
