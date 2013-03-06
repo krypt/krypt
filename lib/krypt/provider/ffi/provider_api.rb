@@ -1,6 +1,6 @@
 module Krypt::FFI
 
-  module ProviderAPI
+  module ProviderAPI 
     extend ::FFI::Library
 
     ffi_lib ::FFI::CURRENT_PROCESS

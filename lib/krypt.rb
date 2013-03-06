@@ -38,7 +38,7 @@ require_relative 'krypt_missing'
 require_relative 'krypt/provider'
 require_relative 'krypt/digest'
 
-require 'krypt-core'
+require 'krypt/core'
 
 # The following files depend on krypt-core being loaded
 require_relative 'krypt/asn1'

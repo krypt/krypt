@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.require_path = "lib"
   s.license = 'MIT'
 
+  s.add_dependency 'ffi'
   s.add_dependency 'krypt-core', version
 
 end
