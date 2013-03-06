@@ -11,9 +11,23 @@ describe "Krypt::Provider" do
   let(:prov) { Krypt::Provider }
 
   describe "#register=" do
+    it "takes an optional name parameter" do
+      -> { prov.register(:name, Object.new) }.should_not raise_error
+    end
+
+    it "takes the name from the provider directly if none is provided" do
+      p1 = Object.new
+      p2 = Object.new
+      def p2.name
+        "test"
+      end
+      -> { prov.register(p1) }.should raise_error NoMethodError
+      -> { prov.register(p2) }.should_not raise_error
+    end
+
     it "does not allow to register a provider twice under the same name" do
-      prov.register(:name, Object.new)
-      -> { prov.register(:name, Object.new) }.should raise_error prov::AlreadyExistsError
+      prov.register(Object.new, :name)
+      -> { prov.register(Object.new, :name) }.should raise_error prov::AlreadyExistsError
     end
   end
 
@@ -25,7 +39,7 @@ describe "Krypt::Provider" do
     context "returns the provider that has been assigned to a given name" do
       let(:instance) { Object.new }
       specify do
-        prov.register(:name, instance)
+        prov.register(instance, :name)
         prov.by_name(:name).should eq(instance)
       end
     end
@@ -52,28 +66,28 @@ describe "Krypt::Provider" do
 
     context "returns provider features based on the order they were registered" do
       it "raises ServiceNotAvailableError if a requested feature is not supported by any provider" do
-        prov.register(:a, provider_a)
-        prov.register(:b, provider_b)
+        prov.register(provider_a, :a)
+        prov.register(provider_b, :b)
         -> { prov.new_service(Object, "test") }.should raise_error prov::ServiceNotAvailableError
       end
 
       it "finds a service only available in a specific provider" do
-        prov.register(:a, provider_a)
-        prov.register(:b, provider_b)
+        prov.register(provider_a, :a)
+        prov.register(provider_b, :b)
         prov.new_service(String).should eq(:A)
         prov.new_service(Integer).should eq(:B)
       end
 
       context "returns the service of the provider registered last if the service is supported by more than one provider" do
         specify "first a, then b" do
-          prov.register(:a, provider_a)
-          prov.register(:b, provider_b)
+          prov.register(provider_a, :a)
+          prov.register(provider_b, :b)
           prov.new_service(Krypt::Digest).should eq(:B)
         end
 
         specify "first b, then a" do
-          prov.register(:b, provider_b)
-          prov.register(:a, provider_a)
+          prov.register(provider_b, :b)
+          prov.register(provider_a, :a)
           prov.new_service(Krypt::Digest).should eq(:A)
         end
       end

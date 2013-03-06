@@ -10,6 +10,8 @@ else
   gem 'binyo',                  :platforms => :ruby,  :github => 'krypt/binyo', :branch => 'master'
 end
 
+gem 'ffi'
+
 group :development do
   gem 'rake'
   gem 'rspec'
