@@ -23,9 +23,9 @@ describe Krypt::ASN1::Parser do
   it "should be reusable for several IOs" do
     parser = Krypt::ASN1::Parser.new
     io = Resources.certificate_io
-    do_and_close(io) { |io| parser.next(io).should_not be_nil }
+    do_and_close(io) { |nio| parser.next(nio).should_not be_nil }
     io = Resources.certificate_io
-    do_and_close(io) { |io| parser.next(io).should_not be_nil }
+    do_and_close(io) { |nio| parser.next(nio).should_not be_nil }
   end
   
 end
@@ -36,7 +36,7 @@ describe Krypt::ASN1::Parser, "#next" do
 
   it "returns a Header when called on an IO representing an ASN.1" do
     io = Resources.certificate_io
-    do_and_close(io) { |io| parse_next io }
+    do_and_close(io) { |nio| parse_next nio }
     parse_next(StringIO.new(Resources.certificate))
   end
 

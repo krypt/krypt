@@ -94,8 +94,8 @@ class Krypt::ASN1Test < Test::Unit::TestCase
       io = StringIO.new
       cons_header.encode_to(io)
       asn1 = Krypt::ASN1.decode(val)
-      asn1.each do |val|
-        val.encode_to(io)
+      asn1.each do |value|
+        value.encode_to(io)
       end
       assert_equal(val, io.string.force_encoding("ASCII-8BIT"))
     end

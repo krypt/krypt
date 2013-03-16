@@ -73,19 +73,6 @@ class Krypt::ParserTest < Test::Unit::TestCase
     assert_header_value_equal(raw, header)
   end
 
-  def test_parse_constructed
-    raw = [%w{30 06 04 01 01 04 01 02}.join("")].pack("H*")
-    parser = Krypt::ASN1::Parser.new
-    io = StringIO.new(raw)
-    header = parser.next(io)
-    assert_equal(Krypt::ASN1::SEQUENCE, header.tag)
-    assert_equal(:UNIVERSAL, header.tag_class)
-    assert_equal(true, header.constructed?)
-    assert_equal(false, header.infinite?)
-    assert_equal(6, header.length)
-    assert_equal(2, header.header_length)
-    assert_header_value_equal(raw, header)
-  end
 
   def test_parse_constructed
     raw = [%w{30 02 80 01 00}.join("")].pack("H*")
@@ -297,6 +284,7 @@ class Krypt::ParserTest < Test::Unit::TestCase
     when :AT_ONCE
       result << value_io.read
     when :STREAMING
+      buf = nil
       while buf = value_io.read(3, buf)
         result << buf
       end
