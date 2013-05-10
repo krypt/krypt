@@ -1,4 +1,4 @@
-require 'krypt-core'
+require 'krypt'
 require 'openssl'
 require 'benchmark'
 
@@ -6,21 +6,21 @@ Benchmark.bm do |bm|
 
   n = 100000
 
-  bm.report("Krypt::Digest empty string") do
+  bm.report("Krypt::Digest (SHA1) empty string") do
     n.times do
-      digest = Krypt::Digest::new("SHA1").digest("")
+      Krypt::Digest::new("SHA1").digest("")
     end
   end
 
   bm.report("Krypt::Digest::SHA1 empty string") do
     n.times do
-      digest = Krypt::Digest::SHA1.new.digest("")
+      Krypt::Digest::SHA1.new.digest("")
     end
   end
 
-  bm.report("OpenSSL::Digest empty string") do
+  bm.report("OpenSSL::Digest (SHA1) empty string") do
     n.times do
-      digest = OpenSSL::Digest.new("SHA1").digest("")
+      OpenSSL::Digest.new("SHA1").digest("")
     end
   end
 
@@ -31,7 +31,7 @@ Benchmark.bm do |bm|
     n.times do
       digest << "a"
     end
-    s = digest.digest
+    digest.digest
   end
 
   bm.report("OpenSSL::Digest::SHA1 million times 'a'") do
@@ -39,7 +39,7 @@ Benchmark.bm do |bm|
     n.times do
       digest << "a"
     end
-    s = digest.digest
+    digest.digest
   end
 
   n = 1000
@@ -48,7 +48,7 @@ Benchmark.bm do |bm|
     n.times do
       digest = Krypt::Digest::SHA1.new
       digest << ("a" * 1_000_000)
-      s = digest.digest
+      digest.digest
     end
   end
 
@@ -56,7 +56,7 @@ Benchmark.bm do |bm|
     n.times do
       digest = OpenSSL::Digest::SHA1.new
       digest << ("a" * 1_000_000)
-      s = digest.digest
+      digest.digest
     end
   end
 end

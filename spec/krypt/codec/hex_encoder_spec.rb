@@ -41,7 +41,7 @@ describe Krypt::Hex::Encoder do
       specify "failed execution of the block" do
         io = StringIO.new
         begin
-          klass.new(io) do |hex|
+          klass.new(io) do
             raise RuntimeError.new 
           end
         rescue RuntimeError

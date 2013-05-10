@@ -41,7 +41,7 @@ describe Krypt::Base64::Encoder do
       specify "failed execution of the block" do
         io = StringIO.new
         begin
-          klass.new(io) do |b64|
+          klass.new(io) do
             raise RuntimeError.new 
           end
         rescue RuntimeError

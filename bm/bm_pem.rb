@@ -36,44 +36,44 @@ Benchmark.bm do |bm|
 
   bm.report("Krypt::ASN1.decode_der") do
     n.times do
-      asn1 = Krypt::ASN1.decode_der(bytes)
+      Krypt::ASN1.decode_der(bytes)
     end
   end
 
   bm.report("Krypt::ASN1.decode_pem") do
     n.times do
-      asn1 = Krypt::ASN1.decode_pem(pem)
+      Krypt::ASN1.decode_pem(pem)
     end
   end
 
   bm.report("Krypt::ASN1.decode with der") do
     n.times do
-      asn1 = Krypt::ASN1.decode(bytes)
+      Krypt::ASN1.decode(bytes)
     end
   end
 
   bm.report("Krypt::ASN1.decode with pem") do
     n.times do
-      asn1 = Krypt::ASN1.decode(pem)
+      Krypt::ASN1.decode(pem)
     end
   end
 
   bm.report("Krypt::PEM.decode only") do
     n.times do
-      der = Krypt::PEM.decode(pem)
+      Krypt::PEM.decode(pem)
     end
   end
 
   bm.report("Krypt::PEM.decode, then ASN1") do
     n.times do
       der = Krypt::PEM.decode(pem)
-      asn1 = Krypt::ASN1.decode(der[0])
+      Krypt::ASN1.decode(der[0])
     end
   end
 
   bm.report("OpenSSL::X509") do
     n.times do
-      c = OpenSSL::X509::Certificate.new(pem)
+     OpenSSL::X509::Certificate.new(pem)
     end
   end
 end
