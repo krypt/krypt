@@ -5,12 +5,14 @@ rvm:
   - jruby-19mode
   - jruby-head
   - rbx-19mode
+  - 2.0.0
 gemfile:
   - Gemfile
 notifications:
   email:
     recipients:
       - Martin.Bosslet@googlemail.com
+      - vipulnsward@gmail.com
     on_success: always
     on_failure: always
 branches:
