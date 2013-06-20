@@ -73,9 +73,9 @@ Benchmark.bm do |bm|
   ossl_cert = OpenSSL::ASN1.decode(Resources.certificate)
   ossl_x509 = OpenSSL::X509::Certificate.new(Resources.certificate)
  
-  bm.report("X509 encode parsed certificate(n=#{n})") { n.times { ossl_x509.to_der } } 
-  bm.report("OpenSSL encode parsed certificate(n=#{n})") { n.times { ossl_cert.to_der } }
-  bm.report("Krypt encode parsed certificate(n=#{n})") { n.times { krypt_cert.to_der } }
+  bm.report("X509 encode parsed certificate(n=#{n})             ") { n.times { ossl_x509.to_der } }
+  bm.report("OpenSSL encode parsed certificate(n=#{n})          ") { n.times { ossl_cert.to_der } }
+  bm.report("Krypt encode parsed certificate(n=#{n})            ") { n.times { krypt_cert.to_der } }
   
   krypt_seq = Krypt::ASN1::Sequence.new(krypt_content)
   krypt_set = Krypt::ASN1::Set.new(krypt_content)
@@ -85,10 +85,10 @@ Benchmark.bm do |bm|
   ossl_set = OpenSSL::ASN1::Set.new(ossl_content)
   ossl_asn1 = OpenSSL::ASN1::Sequence.new([ossl_seq, ossl_set])
 
-  bm.report("OpenSSL encode generated once(n=#{n})") { n.times { ossl_asn1.to_der } }
-  bm.report("Krypt encode generated once(n=#{n})") { n.times { krypt_asn1.to_der } }
+  bm.report("OpenSSL encode generated once(n=#{n})              ") { n.times { ossl_asn1.to_der } }
+  bm.report("Krypt encode generated once(n=#{n})                ") { n.times { krypt_asn1.to_der } }
   
-  bm.report("OpenSSL encode generated n times(n=#{n})") do
+  bm.report("OpenSSL encode generated n times(n=#{n})           ") do
     n.times do
       ossl_seq = OpenSSL::ASN1::Sequence.new(ossl_content)
       ossl_set = OpenSSL::ASN1::Set.new(ossl_content)
@@ -96,7 +96,7 @@ Benchmark.bm do |bm|
     end
   end
 
-  bm.report("Krypt encode generated n times(n=#{n})") do
+  bm.report("Krypt encode generated n times(n=#{n})             ") do
     n.times do
       krypt_seq = Krypt::ASN1::Sequence.new(krypt_content)
       krypt_set = Krypt::ASN1::Set.new(krypt_content)
@@ -104,7 +104,7 @@ Benchmark.bm do |bm|
     end
   end
 
-  bm.report("Krypt encode generated n times SEQ(n=#{n})") do
+  bm.report("Krypt encode generated n times SEQ(n=#{n})         ") do
     n.times do
       krypt_seq1 = Krypt::ASN1::Sequence.new(krypt_content)
       krypt_seq2 = Krypt::ASN1::Sequence.new(krypt_content)
@@ -112,7 +112,7 @@ Benchmark.bm do |bm|
     end
   end
 
-  bm.report("Krypt encode generated n times SET(n=#{n})") do
+  bm.report("Krypt encode generated n times SET(n=#{n})         ") do
     n.times do
       krypt_set1 = Krypt::ASN1::Set.new(krypt_content)
       krypt_set2 = Krypt::ASN1::Set.new(krypt_content)
@@ -120,11 +120,11 @@ Benchmark.bm do |bm|
     end
   end
 
-  bm.report("Krypt encode parsed certificate to file(n=#{n})") { n.times { krypt_cert.encode_to(file) } }
+  bm.report("Krypt encode parsed certificate to file(n=#{n})    ") { n.times { krypt_cert.encode_to(file) } }
   file.rewind
-  bm.report("Krypt encode generated once to file(n=#{n})") { n.times { krypt_asn1.encode_to(file) } }
+  bm.report("Krypt encode generated once to file(n=#{n})        ") { n.times { krypt_asn1.encode_to(file) } }
   file.rewind
-  bm.report("Krypt encode generated n times to file(n=#{n})") do
+  bm.report("Krypt encode generated n times to file(n=#{n})     ") do
     n.times do
       krypt_seq = Krypt::ASN1::Sequence.new(krypt_content)
       krypt_set = Krypt::ASN1::Set.new(krypt_content)
@@ -133,8 +133,8 @@ Benchmark.bm do |bm|
   end
 
   bm.report("Krypt encode parsed certificate to StringIO(n=#{n})") { n.times { krypt_cert.encode_to(StringIO.new) } }
-  bm.report("Krypt encode generated once to StringIO(n=#{n})") { n.times { krypt_asn1.encode_to(StringIO.new) } }
-  bm.report("Krypt encode generated n times to StringIO(n=#{n})") do
+  bm.report("Krypt encode generated once to StringIO(n=#{n})    ") { n.times { krypt_asn1.encode_to(StringIO.new) } }
+  bm.report("Krypt encode generated n times to StringIO(n=#{n}) ") do
     n.times do
       krypt_seq = Krypt::ASN1::Sequence.new(krypt_content)
       krypt_set = Krypt::ASN1::Set.new(krypt_content)
