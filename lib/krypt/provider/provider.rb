@@ -13,7 +13,7 @@ module Krypt::Provider
       name ||= provider.name
       raise AlreadyExistsError.new("There already is a Provider named #{name}") if PROVIDERS.has_key?(name)
       PROVIDERS[name] = provider
-      PROVIDER_LIST << name
+      PROVIDER_LIST.unshift(name)
     end
 
     def by_name(name)
@@ -27,7 +27,7 @@ module Krypt::Provider
     end
 
     def new_service(klass, *args)
-      PROVIDER_LIST.reverse.each do |name| 
+      PROVIDER_LIST.each do |name| 
         service = PROVIDERS[name].new_service(klass, *args)
         return service if service
       end
