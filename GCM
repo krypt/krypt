@@ -1,0 +1,31 @@
+require 'openSSL'
+plaintext = "two if by land"
+#I believe this is what they're looking for with the inc function
+def inc(cb)
+  additive = cb.shift
+  cb = cb << ((additive+1)%2)
+end
+def gctr(plaintext)
+  cipher = OpenSSL::Cipher::AES.new(128)
+  cipher.encrypt
+  key = cipher.random_key
+  cb = cipher.random_iv  #correct assumption?
+  n = (plaintext.length/128).ceil
+  x = Array.new(plaintext.length)
+  array_filler = 0 #used to fill the array with binary values
+
+#converts the message to binary array
+  plaintext.each_byte{|c|
+    x[i] =  '0' + c.to_s(2)
+    array_filler+=1 }
+
+#the loop detailed in the NIST article for GCM
+  i = 0
+  until i == (n-1)
+    y[i] = x[i] ^ cipher.update(cb(i))
+    inc(cb)
+    i+=1
+  end
+end
+#It'll be easy to convert the binary values to cipher text, but I don't want to
+#implement that until the 'unsupported cipher algorithm' problem is fixed 
