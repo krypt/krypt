@@ -1,0 +1,25 @@
+def block_mult(block)
+  z = Array.new(128,0)
+  v = y
+  r = Array.new(120,0)
+  r = r.unshift!(1,1,1,0,0,0,0,1)
+  #is there an easier way to declare r as specified
+  i = 0
+  #By specifications of the NIST article
+  #I would like to clean this section up if possible, maybe break it down into two methods
+  until i == 127
+     case 
+     when x[i] == 0
+       z[i+1] = z[i]
+     when x[i] == 1
+       z[i+1] = z[i]^v[i]
+     when v.last == 0
+       v = v.shift! << 1
+     when v.last == 1
+       v = v.shift! << 1
+       v = v ^ r
+     i+=1
+    end
+  end
+  return z
+end
