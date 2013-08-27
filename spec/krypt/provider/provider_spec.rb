@@ -31,6 +31,20 @@ describe "Krypt::Provider" do
     end
   end
 
+  describe "#remove" do
+    it "does allow to remove a registered provider" do
+      p1 = Object.new
+      def p1.name 
+        "test"
+      end
+      -> { prov.register(p1) }.should_not raise_error
+      -> { prov.remove(p1) }.should_not raise_error
+    end
+    it "returns nil if a provider with a given name does not exist" do
+      prov.remove(:name).should be_nil
+    end
+  end
+
   describe "#by_name" do
     it "returns nil if a provider with a given name does not exist" do
       prov.by_name(:name).should be_nil

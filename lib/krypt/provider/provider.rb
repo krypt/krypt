@@ -21,9 +21,8 @@ module Krypt::Provider
     end
 
     def remove(name)
-      p = PROVIDERS.delete(name)
+      PROVIDERS.delete(name)
       PROVIDER_LIST.delete(name)
-      p.finalize
     end
 
     def new_service(klass, *args)
