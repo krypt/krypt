@@ -23,6 +23,7 @@ module Krypt::Provider
     def remove(name)
       PROVIDERS.delete(name)
       PROVIDER_LIST.delete(name)
+      PROVIDERS[name].finalize unless p.nil?
     end
 
     def new_service(klass, *args)
