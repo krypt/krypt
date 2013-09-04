@@ -27,15 +27,15 @@ describe "Krypt::ASN1::Template::Sequence" do
       end
       context "rejects wrong encoding" do
         let(:der) { "\x30\x03\x04\x01\x01" }
-        it { -> { subject.version }.should raise_error asn1error }
+        it { expect { subject.version }.to raise_error asn1error }
       end
       context "rejects encoding that is too long" do
         let(:der) { "\x30\x06\x04\x01\x01\x04\x01\x01" }
-        it { -> { subject.version }.should raise_error asn1error }
+        it { expect { subject.version }.to raise_error asn1error }
       end
       context "rejects encoding that is not complete" do
         let(:der) { "\x30\x03\x04\x01" }
-        it { -> { subject.version }.should raise_error asn1error }
+        it { expect { subject.version }.to raise_error asn1error }
       end
     end
 
@@ -57,11 +57,11 @@ describe "Krypt::ASN1::Template::Sequence" do
       context "rejects encodings where either field is missing" do
         context "(first)" do
           let(:der) { "\x30\x03\x01\x01\xFF" }
-          it { -> { subject.version }.should raise_error asn1error }
+          it { expect { subject.version }.to raise_error asn1error }
         end
         context "(second)" do
           let(:der) { "\x30\x03\x02\x01\x01" }
-          it { -> { subject.version }.should raise_error asn1error }
+          it { expect { subject.version }.to raise_error asn1error }
         end
       end
     end
@@ -89,7 +89,7 @@ describe "Krypt::ASN1::Template::Sequence" do
 
       context "when parsing them" do
         let(:der) { "\x30\x04\x00\x00\x22\x99" }
-        it { -> { subject }.should_not raise_error }
+        it { expect { subject }.to_not raise_error }
       end
 
       context "and encodes them again exactly as received" do
@@ -99,12 +99,12 @@ describe "Krypt::ASN1::Template::Sequence" do
 
       context "but raises an error when accessing the fields" do
         let(:der) { "\x30\x04\x00\x00\x22\x99" }
-        it { -> { subject.a }.should raise_error asn1error }
+        it { expect { subject.a }.to raise_error asn1error }
       end
 
       context "but raises an error if the tag doesn't match" do
         let(:der) { "\x31\x06\x02\x01\x01\x04\x01a" }
-        it { -> { subject.a }.should raise_error asn1error }
+        it { expect { subject.a }.to raise_error asn1error }
       end
     end
 
@@ -133,7 +133,7 @@ describe "Krypt::ASN1::Template::Sequence" do
           let(:der) { "\x30\x06\x02\x01\x01\x01\x01\xFF" }
           let(:tag) { 0 }
           let(:tagging) { tagging }
-          it { -> { subject.a }.should raise_error asn1error }
+          it { expect { subject.a }.to raise_error asn1error }
         end
       end
 
@@ -155,14 +155,14 @@ describe "Krypt::ASN1::Template::Sequence" do
           let(:der) { "\x30\x08\x80\x03\x02\x01\x01\x01\x01\xFF" }
           let(:tag) { 0 }
           let(:tagging) { :EXPLICIT }
-          it { -> { subject.a }.should raise_error asn1error }
+          it { expect { subject.a }.to raise_error asn1error }
         end
 
         context "reject wrong encoding" do
           let(:der) { "\x30\x06\x80\x01\x01\x01\x01\xFF" }
           let(:tag) { 0 }
           let(:tagging) { :EXPLICIT }
-          it { -> { subject.a }.should raise_error asn1error }
+          it { expect { subject.a }.to raise_error asn1error }
         end
       end
 
@@ -517,23 +517,23 @@ describe "Krypt::ASN1::Template::Sequence" do
 
       context "rejects otherwise correct encoding if stream is not consumed" do
         let(:der) { "\x30\x06\x02\x01\x01\x04\x01\x01" } # :d is matched, all others optional or default
-        it { -> { subject.a }.should raise_error asn1error }
+        it { expect { subject.a }.to raise_error asn1error }
       end
 
       context "rejects when wrong encoding is given for an optional field" do
         let(:der) { "\x30\x0C\x01\x01\x00\x14\x01b\x16\x01b\x02\x01\x01" }
-        it { -> { subject.a }.should raise_error asn1error }
+        it { expect { subject.a }.to raise_error asn1error }
       end
 
       context "rejects when wrong encoding is given for a default field" do
         let(:der) { "\x30\x0C\x04\x01\x01\x04\x01b\x16\x01b\x02\x01\x01" }
-        it { -> { subject.a }.should raise_error asn1error }
+        it { expect { subject.a }.to raise_error asn1error }
       end
 
       context "rejects when wrong encoding is given for a default field and the
                optional field is omitted" do
         let(:der) { "\x30\x09\x01\x01\xFF\x16\x01b\x02\x01\x01" }
-        it { -> { subject.a }.should raise_error asn1error }
+        it { expect { subject.a }.to raise_error asn1error }
       end
     end
 
@@ -595,7 +595,7 @@ describe "Krypt::ASN1::Template::Sequence" do
 
         context "rejects wrong encoding" do
           let(:der) { "\x30\x06\x01\x01\xFF\x02\x01\x01" }
-          it { -> { subject.a }.should raise_error asn1error }
+          it { expect { subject.a }.to raise_error asn1error }
         end
       end
 
@@ -619,7 +619,7 @@ describe "Krypt::ASN1::Template::Sequence" do
 
         context "rejects wrong encoding" do
           let(:der) { "\x31\x08\x02\x01\x01\x30\x03\x01\x01\xFF" }
-          it { -> { subject.a }.should raise_error asn1error }
+          it { expect { subject.a }.to raise_error asn1error }
         end
       end
 
@@ -643,7 +643,7 @@ describe "Krypt::ASN1::Template::Sequence" do
 
         context "rejects wrong encoding" do
           let(:der) { "\x30\x08\x30\x03\x01\x01\xFF\x02\x01\x01" }
-          it { -> { subject.a }.should raise_error asn1error }
+          it { expect { subject.a }.to raise_error asn1error }
         end
       end
 
@@ -667,7 +667,7 @@ describe "Krypt::ASN1::Template::Sequence" do
 
         context "rejects wrong encoding" do
           let(:der) { "\x30\x08\x30\x03\x01\x01\xFF\x02\x01\x01" }
-          it { -> { subject.a }.should raise_error asn1error }
+          it { expect { subject.a }.to raise_error asn1error }
         end
       end
 
@@ -969,38 +969,38 @@ describe "Krypt::ASN1::Template::Sequence" do
         context ":IMPLICIT" do
           let(:tagging) { :IMPLICIT }
           let(:der) { "\x30\x03\x80\x01\x01" }
-          it { -> { subject.a.value }.should raise_error asn1error }
+          it { expect { subject.a.value }.to raise_error asn1error }
         end
 
         context ":CONTEXT_SPECIFIC" do
           let(:tagging) { :CONTEXT_SPECIFIC }
           let(:der) { "\x30\x03\x80\x01\x01" }
-          it { -> { subject.a.value }.should raise_error asn1error }
+          it { expect { subject.a.value }.to raise_error asn1error }
         end
 
         context ":APPLICATION" do
           let(:tagging) { :APPLICATION }
           let(:der) { "\x30\x03\x40\x01\x01" }
-          it { -> { subject.a.value }.should raise_error asn1error }
+          it { expect { subject.a.value }.to raise_error asn1error }
         end
 
         context ":PRIVATE" do
           let(:tagging) { :PRIVATE }
           let(:der) { "\x30\x03\xC0\x01\x01" }
-          it { -> { subject.a.value }.should raise_error asn1error }
+          it { expect { subject.a.value }.to raise_error asn1error }
         end
 
         #Can be argued. For now, let's not endorse redundancy
         context ":UNIVERSAL" do
           let(:tagging) { :UNIVERSAL }
           let(:der) { "\x30\x03\x02\x01\x01" }
-          it { -> { subject.a.value }.should raise_error asn1error }
+          it { expect { subject.a.value }.to raise_error asn1error }
         end
 
         context ":EXPLICIT" do
           let(:tagging) { :EXPLICIT }
           let(:der) { "\x30\x05\xA0\x03\x02\x01\x01" }
-          it { -> { subject.a.value }.should_not raise_error }
+          it { expect { subject.a.value }.to_not raise_error }
         end
       end
 

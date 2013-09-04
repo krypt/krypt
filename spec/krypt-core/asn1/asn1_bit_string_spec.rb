@@ -214,7 +214,7 @@ describe Krypt::ASN1::BitString do
 
       context 'nil' do
         let(:value) { nil }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -233,7 +233,7 @@ describe Krypt::ASN1::BitString do
 
       context 'nil' do
         let(:tag) { nil }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -272,12 +272,12 @@ describe Krypt::ASN1::BitString do
 
       context nil do
         let(:tag_class) { nil }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check nil
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check nil
       end
 
       context :no_such_class do
         let(:tag_class) { :no_such_class }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -320,12 +320,12 @@ describe Krypt::ASN1::BitString do
 
         context '< 0' do
           let(:unused_bits) { -1 }
-          it { -> { subject }.should raise_error asn1error }
+          it { expect { subject }.to raise_error asn1error }
         end
 
         context '> 7' do
           let(:unused_bits) { 8 }
-          it { -> { subject }.should raise_error asn1error }
+          it { expect { subject }.to raise_error asn1error }
         end
       end
     end
@@ -350,7 +350,7 @@ describe Krypt::ASN1::BitString do
       context "raise IO error transparently" do
         let(:value) { _B('01010101') }
         let(:io) { io_error_object }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -408,7 +408,7 @@ describe Krypt::ASN1::BitString do
 
       it 'rejects incomplete value' do
         asn1 = decoder.decode("\x03\x00")
-        -> { asn1.value }.should raise_error asn1error
+        expect { asn1.value }.to raise_error asn1error
       end
 
       context 'unused_bits is 0 for empty value' do
@@ -429,7 +429,7 @@ describe Krypt::ASN1::BitString do
 
       context 'rejects unused_bits larger than 7' do
         let(:der) { "\x03\x02\x08\x01" }
-        it { -> { subject.value }.should raise_error asn1error }
+        it { expect { subject.value }.to raise_error asn1error }
       end
     end
 

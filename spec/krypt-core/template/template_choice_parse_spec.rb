@@ -30,12 +30,12 @@ describe "Krypt::ASN1::Template::Choice" do
 
       context "rejects wrong encoding" do
         let(:der) { "\x04\x01\x01" }
-        it { -> { subject.value }.should raise_error asn1error }
+        it { expect { subject.value }.to raise_error asn1error }
       end
 
       context "rejects encoding that is not complete" do
         let(:der) { "\x02\x01" }
-        it { -> { subject.value }.should raise_error asn1error }
+        it { expect { subject.value }.to raise_error asn1error }
       end
     end
 
@@ -68,7 +68,7 @@ describe "Krypt::ASN1::Template::Choice" do
 
       context "rejects wrong encoding" do
         let(:der) { "\x04\x01\xFF" }
-        it { -> { subject.value }.should raise_error asn1error }
+        it { expect { subject.value }.to raise_error asn1error }
       end
     end
 
@@ -94,7 +94,7 @@ describe "Krypt::ASN1::Template::Choice" do
 
       context "when parsing them" do
         let(:der) { "\x02\x00" }
-        it { -> { subject }.should_not raise_error }
+        it { expect { subject }.to_not raise_error }
       end
 
       context "and encodes them again exactly as received" do
@@ -104,12 +104,12 @@ describe "Krypt::ASN1::Template::Choice" do
 
       context "but raises an error when accessing the fields" do
         let(:der) { "\x02\x00" }
-        it { -> { subject.value }.should raise_error asn1error }
+        it { expect { subject.value }.to raise_error asn1error }
       end
 
       context "but raises an error if the tag does not match" do
         let(:der) { "\x01\x01\xFF" }
-        it { -> { subject.value }.should raise_error asn1error }
+        it { expect { subject.value }.to raise_error asn1error }
       end
     end
 

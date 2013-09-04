@@ -291,12 +291,12 @@ describe Krypt::ASN1::Sequence do
 
       context 'nil' do
         let(:value) { nil }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context 'does not respond to :each' do
         let(:value) { '123' }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -316,7 +316,7 @@ describe Krypt::ASN1::Sequence do
 
       context 'nil' do
         let(:tag) { nil }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -356,12 +356,12 @@ describe Krypt::ASN1::Sequence do
 
       context nil do
         let(:tag_class) { nil }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check nil
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check nil
       end
 
       context :no_such_class do
         let(:tag_class) { :no_such_class }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -453,7 +453,7 @@ describe Krypt::ASN1::Sequence do
       context "raise IO error transparently" do
         let(:value) { [s(''), s(''), s('')] }
         let(:io) { io_error_object }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 

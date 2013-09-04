@@ -54,7 +54,7 @@ describe Krypt::ASN1::Null do
     end
 
     it "only accepts nil as the value argument" do
-      -> { klass.new(1) }.should raise_error(ArgumentError)
+      expect { klass.new(1) }.to raise_error(ArgumentError)
     end
 
     context 'gets explicit tag number as the 2nd argument' do
@@ -123,7 +123,7 @@ describe Krypt::ASN1::Null do
       it "only accepts nil as the value argument" do
         asn1 = klass.new
         asn1.value = 1
-        -> { asn1.to_der }.should raise_error asn1error
+        expect { asn1.to_der }.to raise_error asn1error
       end
     end
 
@@ -197,7 +197,7 @@ describe Krypt::ASN1::Null do
 
       context 'nil' do
         let(:tag) { nil }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -236,12 +236,12 @@ describe Krypt::ASN1::Null do
 
       context nil do
         let(:tag_class) { nil }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check nil
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check nil
       end
 
       context :no_such_class do
         let(:tag_class) { :no_such_class }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -293,7 +293,7 @@ describe Krypt::ASN1::Null do
       context "raise IO error transparently" do
         let(:value) { nil }
         let(:io) { io_error_object }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -354,7 +354,7 @@ describe Krypt::ASN1::Null do
 
     context 'rejects values with a length > 0' do
       let(:der) { "\x05\x01\x00" }
-      it { -> { subject.value }.should raise_error asn1error }
+      it { expect { subject.value }.to raise_error asn1error }
     end
   end
 end
