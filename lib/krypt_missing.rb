@@ -10,9 +10,23 @@ end
 module Krypt
  module Helper
   
-   #:nodoc:  
-   # Some helpers are implemented in native code in krypt-core.  
-  
+  module XOR
+    def xor(s1, s2)
+      String.new.tap do |result|
+        s1.bytes.each_with_index do |b, i|
+          result << (b ^ s2.getbyte(i))
+        end
+      end
+    end
+
+    def xor!(recv, other)
+      recv.bytes.each_with_index do |b, i|
+        recv.setbyte(i, b ^ other.getbyte(i))
+      end
+      recv
+    end
+  end
+
  end
 end
 

@@ -62,7 +62,7 @@ module Krypt::Hex
     # Please see IO#write for further details.
     #
     def write(data)
-      generic_write(data, 1) { |write_data| Krypt::Hex.encode(write_data) }
+      generic_write(data, 1) { |data| Krypt::Hex.encode(data) }
     end
     alias << write
 
@@ -109,7 +109,7 @@ module Krypt::Hex
     # Please see IO#write for further details.
     #
     def write(data)
-      generic_write(data, 2) { |write_data| Krypt::Hex.decode(write_data) }
+      generic_write(data, 2) { |data| Krypt::Hex.decode(data) }
     end
     alias << write
 

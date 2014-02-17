@@ -1,5 +1,6 @@
 module Krypt
   class PBKDF2
+    include Krypt::Helper::XOR
     
     MAX_FACTOR = (2 ** 32) - 1
 
@@ -30,7 +31,7 @@ module Krypt
         ("\0" * @block_size).force_encoding(Encoding::BINARY).tap do |result|
           1.upto(iter) do
             u = Krypt::HMAC.digest(@digest, pwd, u)
-            Krypt::Helper::String.xor!(result, u)
+            xor!(result, u)
           end
         end
       end

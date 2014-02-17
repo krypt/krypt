@@ -75,7 +75,7 @@ module Krypt::Base64
     # Please see IO#write for further details.
     #
     def write(data)
-      generic_write(data, 3) { |write_data| Krypt::Base64.encode(write_data) }
+      generic_write(data, 3) { |data| Krypt::Base64.encode(data) }
     end
     alias << write
 
@@ -127,7 +127,7 @@ module Krypt::Base64
     # Please see IO#write for further details.
     #
     def write(data)
-      generic_write(data, 4) { |write_data| Krypt::Base64.decode(write_data) }
+      generic_write(data, 4) { |data| Krypt::Base64.decode(data) }
     end
     alias << write
 

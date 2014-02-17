@@ -6,7 +6,7 @@ module Krypt
       @key = process_key(key)
 
       # hash ipad
-      hash_pad("\x36")
+      hash_pad(0x36)
     end
 
     def update(data)
@@ -17,7 +17,7 @@ module Krypt
     def digest
       inner_digest = @digest.digest
       # hash opad
-      hash_pad("\x5c")
+      hash_pad(0x5c)
       @digest << inner_digest
       @digest.digest
     end
@@ -50,14 +50,18 @@ module Krypt
         end
 
         if key.size < block_len
-          key + ("\0" * (block_len - key.size))
+          new_key = key.dup.tap do |new_key|
+            (block_len - key.size).times { new_key << 0 }
+          end
         else
           key
         end
       end
 
       def hash_pad(pad_char)
-        @digest << Krypt::Helper::String.xor!(pad_char * @key.size, @key)
+        @digest << String.new.tap do |s|
+          @key.each_byte { |b| s << (pad_char ^ b) }
+        end
       end
 
   end
