@@ -14,7 +14,7 @@ gem 'ffi'
 
 group :development do
   gem 'rake'
-  gem 'rspec'
+  gem 'rspec', '~> 2.99.0'
   gem 'jruby-openssl', :platforms => :jruby
 end
 

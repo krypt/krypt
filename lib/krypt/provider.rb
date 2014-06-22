@@ -1,8 +1,26 @@
 require_relative 'provider/provider'
 
+##
+# If JRuby is configured with native API access disabled, requiring the FFI
+# provider will result in a LoadError. The FFI provider is not required at
+# runtime as there is always a default (Java-based) provider.
+#
+
+def java?
+  !! (RUBY_PLATFORM =~ /java/)
+end
+
+def native_disabled?
+  require 'jruby'
+  !JRuby.runtime.instance_config.native_enabled
+end
+
 begin
   require_relative 'provider/ffi'
 rescue LoadError => e
-  # cf. https://github.com/krypt/krypt/issues/47
-  warn "FFI provider could not be loaded. Error message: #{e}"
+  if java? && native_disabled?
+    # Do not use the FFI provider with JRuby and native API access disabled
+  else
+    raise e
+  end
 end
