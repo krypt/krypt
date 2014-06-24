@@ -113,7 +113,7 @@ describe Krypt::Digest do
     end
 
     it "rejects an unknown algorithm" do
-      -> { klass.new("HAS1") }.should raise_error Krypt::Provider::ServiceNotAvailableError
+      expect { klass.new("HAS1") }.to raise_error Krypt::Provider::ServiceNotAvailableError
     end
 
     context "accepts an algorithm oid String" do
@@ -156,7 +156,7 @@ describe Krypt::Digest do
     end
 
     it "rejects an unknown oid" do
-      -> { klass.new("1.2.3.4.5") }.should raise_error Krypt::Provider::ServiceNotAvailableError
+      expect { klass.new("1.2.3.4.5") }.to raise_error Krypt::Provider::ServiceNotAvailableError
     end
   end
 

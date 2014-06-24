@@ -185,12 +185,12 @@ describe Krypt::ASN1::Boolean do
 
       context 'nil' do
         let(:value) { nil }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check nil
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check nil
       end
 
       context 'non true/false e.g. String' do
         let(:value) { 'hi!' }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check true/false
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check true/false
       end
     end
 
@@ -209,7 +209,7 @@ describe Krypt::ASN1::Boolean do
 
       context 'nil' do
         let(:tag) { nil }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -248,12 +248,12 @@ describe Krypt::ASN1::Boolean do
 
       context nil do
         let(:tag_class) { nil }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check nil
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check nil
       end
 
       context :no_such_class do
         let(:tag_class) { :no_such_class }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -310,7 +310,7 @@ describe Krypt::ASN1::Boolean do
       context "raise IO error transparently" do
         let(:value) { true }
         let(:io) { io_error_object }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -346,7 +346,7 @@ describe Krypt::ASN1::Boolean do
 
       context 'rejects values whose length is > 1' do
        let(:der) { "\x01\x02\x01\x01" }
-       it { -> { subject.value }.should raise_error asn1error }
+       it { expect { subject.value }.to raise_error asn1error }
       end 
     end
 

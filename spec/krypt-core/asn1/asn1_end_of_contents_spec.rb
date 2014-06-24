@@ -38,12 +38,12 @@ describe Krypt::ASN1::EndOfContents do
     end
 
     it "only accepts nil as the value argument" do
-      -> { klass.new(1) }.should raise_error(ArgumentError)
+      expect { klass.new(1) }.to raise_error(ArgumentError)
     end
 
     context "does not accept tag and tag_class arguments" do
-      it { -> { klass.new(nil, 0) }.should raise_error(ArgumentError) }
-      it { -> { klass.new(nil, 0, :UNIVERSAL) }.should raise_error(ArgumentError) }
+      it { expect { klass.new(nil, 0) }.to raise_error(ArgumentError) }
+      it { expect { klass.new(nil, 0, :UNIVERSAL) }.to raise_error(ArgumentError) }
     end
   end
 
@@ -59,7 +59,7 @@ describe Krypt::ASN1::EndOfContents do
       it "accepts objects other than nil as the value argument, but raises on encoding" do
         asn1 = klass.new
         asn1.value = 1
-        -> { asn1.to_der }.should raise_error asn1error
+        expect { asn1.to_der }.to raise_error asn1error
       end
     end
   end
@@ -105,7 +105,7 @@ describe Krypt::ASN1::EndOfContents do
       context "raise IO error transparently" do
         let(:value) { nil }
         let(:io) { io_error_object }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -127,7 +127,7 @@ describe Krypt::ASN1::EndOfContents do
 
     context 'rejects values with a lenght > 0' do
       let(:der) { "\x00\x01\x00" }
-      it { -> { subject.value }.should raise_error asn1error }
+      it { expect { subject.value }.to raise_error asn1error }
     end
   end
 end

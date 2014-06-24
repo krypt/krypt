@@ -240,22 +240,22 @@ describe Krypt::ASN1::GeneralizedTime do
 
       context '(empty)' do
         let(:value) { '' }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'Bignum' do
         let(:value) { 2**64 - 1 }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'negative Integer' do
         let(:value) { -1 }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'String that Integer(str) barks' do
         let(:value) { "ABC" }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
     end
 
@@ -274,7 +274,7 @@ describe Krypt::ASN1::GeneralizedTime do
 
       context 'nil' do
         let(:tag) { nil }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -313,12 +313,12 @@ describe Krypt::ASN1::GeneralizedTime do
 
       context nil do
         let(:tag_class) { nil }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check nil
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check nil
       end
 
       context :no_such_class do
         let(:tag_class) { :no_such_class }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -370,7 +370,7 @@ describe Krypt::ASN1::GeneralizedTime do
       context "raise IO error transparently" do
         let(:value) { 1327330800 }
         let(:io) { io_error_object }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 

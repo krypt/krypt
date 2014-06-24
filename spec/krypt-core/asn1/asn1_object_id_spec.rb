@@ -170,12 +170,12 @@ describe Krypt::ASN1::ObjectId do
 
       context '(empty)' do
         let(:value) { '' }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context '1' do
         let(:value) { '1' }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       # oid[0] ::= 0, 1, 2
@@ -215,47 +215,47 @@ describe Krypt::ASN1::ObjectId do
 
       context 'nil' do
         let(:value) { nil }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context '(empty)' do
         let(:value) { '' }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'single octet' do
         let(:value) { '1' }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'non OID format' do
         let(:value) { '1,0:1' }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'non number id' do
         let(:value) { '1.0.ABC' }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'starts with .' do
         let(:value) { '.0.8571.2' }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'illegal first octet (must be 0..2)' do
         let(:value) { '3.0.8571.2' }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'illegal second octet (must be 0..39)' do
         let(:value) { '1.40.8571.2' }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'rejects sub identifiers in the bignum range' do
         let(:value) { "1.2." + "3" * 1000 + "4.5" }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -274,7 +274,7 @@ describe Krypt::ASN1::ObjectId do
 
       context 'nil' do
         let(:tag) { nil }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -313,12 +313,12 @@ describe Krypt::ASN1::ObjectId do
 
       context nil do
         let(:tag_class) { nil }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check nil
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check nil
       end
 
       context :no_such_class do
         let(:tag_class) { :no_such_class }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -370,7 +370,7 @@ describe Krypt::ASN1::ObjectId do
       context "raise IO error transparently" do
         let(:value) { '1.0.8571.2' }
         let(:io) { io_error_object }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -437,12 +437,12 @@ describe Krypt::ASN1::ObjectId do
 
       context 'Illegal first octet too large (3.50.2.3)' do
         let(:der) { "\x06\x03\xAA\x02\x03" }
-        it { -> { subject.value }.should raise_error asn1error }
+        it { expect { subject.value }.to raise_error asn1error }
       end
 
       context 'Illegal first sub id (4.2.0.0)' do
         let(:der) { "\x06\x03\xA2\x00\x00" }
-        it { -> { subject.value }.should raise_error asn1error }
+        it { expect { subject.value }.to raise_error asn1error }
       end
       
       describe 'We cannot prevent this mistake, so the parsed value will be different than expected' do

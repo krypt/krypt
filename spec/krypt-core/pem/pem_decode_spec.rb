@@ -164,7 +164,7 @@ describe Krypt::PEM do
 
     context "rejects values with non-matching names" do
       let(:value) { "-----BEGIN A-----\n#{intb64}-----END B-----" }
-      it { -> { subject }.should raise_error pemerror }
+      it { expect { subject }.to raise_error pemerror }
     end
 
     context "allows no redundant whitespace" do
@@ -175,7 +175,7 @@ describe Krypt::PEM do
 
       context"leading in footer" do
         let(:value) { "-----BEGIN A-----\n#{intb64} -----END A-----" }
-        it { -> { subject }.should raise_error pemerror }
+        it { expect { subject }.to raise_error pemerror }
       end
  
       context"trailing in header" do
@@ -185,7 +185,7 @@ describe Krypt::PEM do
 
       context"trailing in footer" do
         let(:value) { "-----BEGIN A-----\n#{intb64}-----END A----- " }
-        it { -> { subject }.should raise_error pemerror }
+        it { expect { subject }.to raise_error pemerror }
       end
     end
 

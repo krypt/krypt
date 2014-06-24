@@ -20,7 +20,7 @@ shared_examples_for "a primitive declaration" do |func|
   context "rejects declaration with no name" do
     let(:name) { nil }
     let(:opts) { nil }
-    specify { -> { subject }.should raise_error ArgumentError }
+    specify { expect { subject }.to raise_error ArgumentError }
   end
 
   context "declararation with no options" do
@@ -87,14 +87,14 @@ shared_examples_for "a typed declaration" do |func|
     let(:name) { nil }
     let(:type) { template }
     let(:opts) { nil }
-    specify { -> { subject }.should raise_error ArgumentError }
+    specify { expect { subject }.to raise_error ArgumentError }
   end
 
   context "rejects declaration with no type" do
     let(:name) { :test }
     let(:type) { nil }
     let(:opts) { nil }
-    specify { -> { subject }.should raise_error ArgumentError }
+    specify { expect { subject }.to raise_error ArgumentError }
   end
 
   context "declararation with no options" do

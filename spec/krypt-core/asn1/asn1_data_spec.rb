@@ -57,10 +57,10 @@ describe Krypt::ASN1::ASN1Data do
     end
 
     context "raises ArgumentError for more or less arguments" do
-      it { -> { klass.new }.should raise_error ArgumentError }
-      it { -> { klass.new(5) }.should raise_error ArgumentError }
-      it { -> { klass.new(5, 2) }.should raise_error ArgumentError }
-      it { -> { klass.new(5, 2, :UNIVERSAL, 17) }.should raise_error ArgumentError }
+      it { expect { klass.new }.to raise_error ArgumentError }
+      it { expect { klass.new(5) }.to raise_error ArgumentError }
+      it { expect { klass.new(5, 2) }.to raise_error ArgumentError }
+      it { expect { klass.new(5, 2, :UNIVERSAL, 17) }.to raise_error ArgumentError }
     end
 
     context "gets explicit tag number as the 2nd argument" do
@@ -78,12 +78,12 @@ describe Krypt::ASN1::ASN1Data do
 
       context "does not accept nil as tag" do
         let(:tag) { nil }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context "does not accept a non-Number as tag" do
         let(:tag) { Object.new }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
     end
@@ -118,59 +118,59 @@ describe Krypt::ASN1::ASN1Data do
 
       context "does not accept :EXPLICIT" do
         let(:tag_class) { :EXPLICIT }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context "does not accept unknown tag classes" do
         let(:tag_class) { :IMAGINARY }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context "does not accept non-Symbols as tag class" do
         let(:tag_class) { 7 }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
     describe "rejects :EXPLICIT when set via accessor" do
       it "primitive UNIVERSAL" do
         asn1 = klass.new(42, Krypt::ASN1::INTEGER, :UNIVERSAL)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
 
       it "primitive CONTEXT_SPECIFIC" do
         asn1 = klass.new("42", 0, :CONTEXT_SPECIFIC)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
 
       it "primitive APPLICATION" do
         asn1 = klass.new("42", 0, :APPLICATION)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
 
       it "primitive PRIVATE" do
         asn1 = klass.new("42", 0, :PRIVATE)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
 
       it "constructive UNIVERSAL" do
         asn1 = klass.new([Krypt::ASN1::Null.new], Krypt::ASN1::SEQUENCE, :UNIVERSAL)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
 
       it "constructive CONTEXT_SPECIFIC" do
         asn1 = klass.new([Krypt::ASN1::Null.new], Krypt::ASN1::SEQUENCE, :CONTEXT_SPECIFIC)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
 
       it "constructive APPLICATION" do
         asn1 = klass.new([Krypt::ASN1::Null.new], Krypt::ASN1::SEQUENCE, :APPLICATION)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
 
       it "constructive PRIVATE" do
         asn1 = klass.new([Krypt::ASN1::Null.new], Krypt::ASN1::SEQUENCE, :PRIVATE)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
     end
 
@@ -209,36 +209,36 @@ describe Krypt::ASN1::ASN1Data do
     end
 
     context "rejects :EXPLICIT" do
-      it { -> { klazz.new(42, 3, :EXPLICIT) }.should raise_error asn1error }
+      it { expect { klazz.new(42, 3, :EXPLICIT) }.to raise_error asn1error }
 
       describe "when set via accessor" do
         it "constructive UNIVERSAL" do
           asn1 = klazz.new([Krypt::ASN1::Null.new], Krypt::ASN1::SEQUENCE, :UNIVERSAL)
-          -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+          expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
         end
 
         it "constructive CONTEXT_SPECIFIC" do
           asn1 = klazz.new([Krypt::ASN1::Null.new], Krypt::ASN1::SEQUENCE, :CONTEXT_SPECIFIC)
-          -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+          expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
         end
 
         it "constructive APPLICATION" do
           asn1 = klazz.new([Krypt::ASN1::Null.new], Krypt::ASN1::SEQUENCE, :APPLICATION)
-          -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+          expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
         end
 
         it "constructive PRIVATE" do
           asn1 = klazz.new([Krypt::ASN1::Null.new], Krypt::ASN1::SEQUENCE, :PRIVATE)
-          -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+          expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
         end
       end
     end
 
     context "raises ArgumentError for more or less arguments" do
-      it { -> { klazz.new }.should raise_error ArgumentError }
-      it { -> { klazz.new(5) }.should raise_error ArgumentError }
-      it { -> { klazz.new(5, 2) }.should raise_error ArgumentError }
-      it { -> { klazz.new(5, 2, :UNIVERSAL, 17) }.should raise_error ArgumentError }
+      it { expect { klazz.new }.to raise_error ArgumentError }
+      it { expect { klazz.new(5) }.to raise_error ArgumentError }
+      it { expect { klazz.new(5, 2) }.to raise_error ArgumentError }
+      it { expect { klazz.new(5, 2, :UNIVERSAL, 17) }.to raise_error ArgumentError }
     end
   end
 
@@ -270,36 +270,36 @@ describe Krypt::ASN1::ASN1Data do
     end
 
     context "rejects :EXPLICIT" do
-      it { -> { klazz.new(42, 3, :EXPLICIT) }.should raise_error asn1error }
+      it { expect { klazz.new(42, 3, :EXPLICIT) }.to raise_error asn1error }
     end
 
     describe "rejects :EXPLICIT when set via accessor" do
       it "primitive UNIVERSAL" do
         asn1 = klazz.new(42, Krypt::ASN1::INTEGER, :UNIVERSAL)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
 
       it "primitive CONTEXT_SPECIFIC" do
         asn1 = klazz.new("42", 0, :CONTEXT_SPECIFIC)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
 
       it "primitive APPLICATION" do
         asn1 = klazz.new("42", 0, :APPLICATION)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
 
       it "primitive PRIVATE" do
         asn1 = klazz.new("42", 0, :PRIVATE)
-        -> { asn1.tag_class = :EXPLICIT }.should raise_error asn1error
+        expect { asn1.tag_class = :EXPLICIT }.to raise_error asn1error
       end
     end
 
     context "raises ArgumentError for more or less arguments" do
-      it { -> { klazz.new }.should raise_error ArgumentError }
-      it { -> { klazz.new(5) }.should raise_error ArgumentError }
-      it { -> { klazz.new(5, 2) }.should raise_error ArgumentError }
-      it { -> { klazz.new(5, 2, :UNIVERSAL, 17) }.should raise_error ArgumentError }
+      it { expect { klazz.new }.to raise_error ArgumentError }
+      it { expect { klazz.new(5) }.to raise_error ArgumentError }
+      it { expect { klazz.new(5, 2) }.to raise_error ArgumentError }
+      it { expect { klazz.new(5, 2, :UNIVERSAL, 17) }.to raise_error ArgumentError }
     end
   end
 
@@ -666,12 +666,12 @@ describe Krypt::ASN1::ASN1Data do
     end
 
     context "rejects UNIVERSAL tags > 30" do
-      it { -> { klass.new("\xFF", 31, :UNIVERSAL).to_der }.should raise_error asn1error }
+      it { expect { klass.new("\xFF", 31, :UNIVERSAL).to_der }.to raise_error asn1error }
     end
 
     it "rejects constructed primitive values that are not infinite length" do
       asn1 = mod::OctetString.new [mod::OctetString.new("\x00"), mod::EndOfContents.new]
-      -> { asn1.to_der }.should raise_error asn1error
+      expect { asn1.to_der }.to raise_error asn1error
     end
 
     it "allows to encode constructed primitive values that are infinite length" do
@@ -682,12 +682,12 @@ describe Krypt::ASN1::ASN1Data do
 
     it "rejects primitive SEQUENCE values" do
       asn1 = mod::Sequence.new(1)
-      -> { asn1.to_der }.should raise_error asn1error
+      expect { asn1.to_der }.to raise_error asn1error
     end
 
     it "rejects primitive SET values" do
       asn1 = mod::Set.new(1)
-      -> { asn1.to_der }.should raise_error asn1error
+      expect { asn1.to_der }.to raise_error asn1error
     end
   end
 
@@ -717,7 +717,7 @@ describe Krypt::ASN1::ASN1Data do
         
       context "raise IO error transparently" do
         let(:io) { io_error_object }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -898,7 +898,7 @@ describe Krypt::ASN1::ASN1Data do
           let(:tag) { "\x30" }
           let(:length) { "\x80" }
           let(:value) { "\x02\x01\x01" }
-          it { ->  { subject.value }.should raise_error asn1error }
+          it { expect  { subject.value }.to raise_error asn1error }
         end
       end
 
@@ -950,7 +950,7 @@ describe Krypt::ASN1::ASN1Data do
         let(:tag) { "\x04" }
         let(:length) { "\x8A\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF" }
         let(:value) { "\x01" }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context "rejects reserved initial octet 11111111 for long definite length
@@ -958,7 +958,7 @@ describe Krypt::ASN1::ASN1Data do
         let(:tag) { "\x80" }
         let(:length) { "\xFF\x01\x00" }
         let(:value) { "" }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context "accepts BER redundant tag encodings single octet" do
@@ -982,7 +982,7 @@ describe Krypt::ASN1::ASN1Data do
         let(:tag) { "\x1F\x80\x80\x02" }
         let(:length) { "\x01" }
         let(:value) { "\x01" }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context "rejects complex tag encodings where the tag exceeds max Fixnum
@@ -990,35 +990,35 @@ describe Krypt::ASN1::ASN1Data do
         let(:tag) { "\x1F\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x7F" }
         let(:length) { "\x00" }
         let(:value) { "" }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context "rejects infinite length primitive values" do
         let(:tag) { "\x80" }
         let(:length) { "\x80" }
         let(:value) { "\x01\x01\xFF\x00\x00" }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context "rejects UNIVERSAL tags > 30" do
         let(:tag) { "\x1F\x42" }
         let(:length) { "\x01" }
         let(:value) { "\x00" }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
       
       context "raises ParseError if premature EOF is detected" do
         let(:tag) { "\x02" }
         let(:length) { "\x02" }
         let(:value) { "\x00" }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context "raises ParseError if header ends prematurely" do
         let(:tag) { "" }
         let(:length) { "" }
         let(:value) { "" }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       it "decodes arbitrary objects that respond to #to_der" do
@@ -1122,7 +1122,7 @@ describe Krypt::ASN1::ASN1Data do
 
     context "rejects non PEM values" do
       let(:value) { Resources.certificate }
-      it { -> { subject }.should raise_error asn1error }
+      it { expect { subject }.to raise_error asn1error }
     end
 
     it "decodes files" do

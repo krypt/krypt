@@ -236,27 +236,27 @@ describe Krypt::ASN1::UTCTime do
 
       context '(empty)' do
         let(:value) { '' }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context 'Bignum' do
         let(:value) { 2**64 - 1 }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
 
       context 'negative Integer' do
         let(:value) { -1 }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
       context 'String that Integer(str) barks' do
         let(:value) { "ABC" }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check value
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check value
       end
 
        context 'some object' do
          let(:value) { Object.new }
-         it { -> { subject }.should raise_error asn1error }
+         it { expect { subject }.to raise_error asn1error }
        end
     end
 
@@ -275,7 +275,7 @@ describe Krypt::ASN1::UTCTime do
 
       context 'nil' do
         let(:tag) { nil }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -314,12 +314,12 @@ describe Krypt::ASN1::UTCTime do
 
       context nil do
         let(:tag_class) { nil }
-        it { -> { subject }.should raise_error asn1error } # TODO: ossl does not check nil
+        it { expect { subject }.to raise_error asn1error } # TODO: ossl does not check nil
       end
 
       context :no_such_class do
         let(:tag_class) { :no_such_class }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -371,7 +371,7 @@ describe Krypt::ASN1::UTCTime do
       context "raise IO error transparently" do
         let(:value) { 1327330800 }
         let(:io) { io_error_object }
-        it { -> { subject }.should raise_error asn1error }
+        it { expect { subject }.to raise_error asn1error }
       end
     end
 
@@ -415,7 +415,7 @@ describe Krypt::ASN1::UTCTime do
       
       context 'rejects nonsensical values' do
         let(:der) { "\x17\x0DABCDEFGHIJKLZ" }
-        it { -> { subject.value }.should raise_error asn1error }
+        it { expect { subject.value }.to raise_error asn1error }
       end
 
       context 'timezone' do

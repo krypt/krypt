@@ -12,7 +12,7 @@ describe "Krypt::Provider" do
 
   describe "#register=" do
     it "takes an optional name parameter" do
-      -> { prov.register(:name, Object.new) }.should_not raise_error
+      expect { prov.register(:name, Object.new) }.to_not raise_error
     end
 
     it "takes the name from the provider directly if none is provided" do
@@ -21,13 +21,13 @@ describe "Krypt::Provider" do
       def p2.name
         "test"
       end
-      -> { prov.register(p1) }.should raise_error NoMethodError
-      -> { prov.register(p2) }.should_not raise_error
+      expect { prov.register(p1) }.to raise_error NoMethodError
+      expect { prov.register(p2) }.to_not raise_error
     end
 
     it "does not allow to register a provider twice under the same name" do
       prov.register(Object.new, :name)
-      -> { prov.register(Object.new, :name) }.should raise_error prov::AlreadyExistsError
+      expect { prov.register(Object.new, :name) }.to raise_error prov::AlreadyExistsError
     end
   end
 
@@ -68,7 +68,7 @@ describe "Krypt::Provider" do
       it "raises ServiceNotAvailableError if a requested feature is not supported by any provider" do
         prov.register(provider_a, :a)
         prov.register(provider_b, :b)
-        -> { prov.new_service(Object, "test") }.should raise_error prov::ServiceNotAvailableError
+        expect { prov.new_service(Object, "test") }.to raise_error prov::ServiceNotAvailableError
       end
 
       it "finds a service only available in a specific provider" do
