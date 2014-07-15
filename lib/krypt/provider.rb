@@ -20,6 +20,8 @@ begin
 rescue LoadError => e
   if java? && native_disabled?
     # Do not use the FFI provider with JRuby and native API access disabled
+  elsif java?
+    warn "FFI support not available for #{RUBY_PLATFORM}"
   else
     raise e
   end
